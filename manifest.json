@@ -1,63 +1,34 @@
 {
-  "name": "National Guideline \u2014 Clinical Mx of Dengue 2025",
-  "short_name": "Dengue 2025",
-  "description": "National Guideline for Clinical Management of Dengue, 5th Edition 2025 \u2014 DGHS Bangladesh",
-  "start_url": "/Dengue-Guideline-2025/index.html",
-  "scope": "/Dengue-Guideline-2025/",
+  "name": "National Guideline for Clinical Mx of Dengue 2025",
+  "short_name": "Dengue Guide",
+  "description": "DGHS Bangladesh — National Guideline for Clinical Management of Dengue, 5th Edition 2025",
+  "start_url": "./dengue_guideline_2025.html",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0F172A",
-  "theme_color": "#0F172A",
+  "background_color": "#0B2D42",
+  "theme_color": "#0B2D42",
   "lang": "en",
+  "scope": "./",
+  "categories": ["medical", "health", "education"],
   "icons": [
-    {
-      "src": "icons/icon-72.png",
-      "sizes": "72x72",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-128.png",
-      "sizes": "128x128",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icons/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-384.png",
-      "sizes": "384x384",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icons/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-72x72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "icon-96x96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any" },
+    { "src": "icon-128x128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icon-144x144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icon-152x152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192x192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-384x384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512x512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
-  "prefer_related_applications": false
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Fluid Calculator",
+      "short_name": "Fluid Calc",
+      "description": "IV Fluid Calculator for Dengue",
+      "url": "./dengue_guideline_2025.html#calculators",
+      "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
+    }
+  ]
 }
