@@ -72,12 +72,23 @@ html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;rig
 .hero h1{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin:0;color:#fff;white-space:nowrap;overflow:hidden}
 .hero-sub{font-family:'Courier New',Courier,monospace;font-size:.78rem;line-height:1.2;letter-spacing:.06em;color:var(--teal);margin-top:3px;white-space:nowrap}
 .wrap{width:100%;max-width:880px;margin:0 auto;padding:0 10px 0;flex:1;min-height:0;display:flex;flex-direction:column}
-.tab-nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--border);border-bottom:2px solid var(--border);margin-bottom:8px;flex-shrink:0}
-.tab-btn{display:flex;align-items:center;justify-content:flex-start;gap:5px;background:none;border:none;padding:6px 2px 6px 5px;white-space:nowrap;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:color .15s,border-color .15s;font-family:'Inter',sans-serif;text-align:center}
+.tab-nav{position:relative;display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;margin-bottom:8px;flex-shrink:0}
+.tab-btn{display:flex;align-items:center;justify-content:flex-start;gap:5px;background:none;border:none;position:relative;z-index:1;padding:7px 4px;white-space:nowrap;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .2s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;text-align:center}
 .tab-btn .ti{display:inline-flex;align-items:center;justify-content:center;flex:0 0 17px;width:17px;height:17px;font-size:13px;line-height:1;text-align:center}
-@media(min-width:480px){.tab-btn{justify-content:center;padding:6px 2px}}
+
+/* liquid-glass pill behind the active tab (slides between tabs) */
+.tab-pill{position:absolute;left:0;top:0;width:0;height:0;z-index:0;border-radius:999px;pointer-events:none;opacity:0;
+ background:radial-gradient(120% 140% at 25% 0%,rgba(34,211,238,.26),rgba(34,211,238,0) 62%),linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06) 55%,rgba(255,255,255,.12));
+ border:1px solid rgba(255,255,255,.22);
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.5),inset 0 -1px 2px rgba(255,255,255,.14),0 5px 16px rgba(0,0,0,.6);
+ -webkit-backdrop-filter:blur(10px) saturate(1.8);backdrop-filter:blur(10px) saturate(1.8)}
+.tab-pill.on{opacity:1}
+.tab-pill.anim{transition:transform .42s cubic-bezier(.3,1.25,.5,1),width .42s cubic-bezier(.3,1.25,.5,1),height .3s ease}
+@media(prefers-reduced-motion:reduce){.tab-pill.anim{transition:none}}
+@media(min-width:480px){.tab-nav{grid-template-columns:repeat(4,1fr);justify-content:normal}.tab-btn{justify-content:center;padding:7px 2px}}
+@media(max-width:340px){.tab-btn{gap:3px;padding:7px 2px;font-size:10px}}
 .tab-btn:hover{color:var(--teal)}
-.tab-btn.active{color:var(--teal);border-bottom-color:var(--teal);font-weight:600}
+.tab-btn.active{color:var(--teal);font-weight:600}
 .tab-panel{display:none}.tab-panel.active{display:block;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:6px}
 .acc{margin-bottom:6px;border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
 .acc-hdr{width:100%;background:var(--white);border:none;text-align:left;padding:8px 12px;color:var(--navy);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;font-family:'Inter',sans-serif}
@@ -252,6 +263,7 @@ try{if(navigator.standalone===true)document.documentElement.classList.add('ios-s
 </div>
 <div class="wrap">
 <div class="tab-nav">
+  <span class="tab-pill" id="tab-pill" aria-hidden="true"></span>
   <button class="tab-btn active" onclick="showTab('overview')"><span class="ti">📋</span><span>Overview</span></button>
   <button class="tab-btn" onclick="showTab('adult')"><span class="ti">👨</span><span>Adult</span></button>
   <button class="tab-btn" onclick="showTab('children')"><span class="ti">👶</span><span>Children</span></button>
@@ -760,6 +772,7 @@ function showTab(id){
   pn.classList.add('active');
   const f=document.querySelector('.src');if(f)pn.appendChild(f); /* footer sits at the end of the scrolling content */
   document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')});
+  if(window.movePill)movePill(true);
 }
 function toggleAcc(btn){
   const body=btn.nextElementSibling;
@@ -1106,6 +1119,20 @@ document.addEventListener('click',function(e){
   openReader(parseInt(a.getAttribute('data-pg'),10));
 },true);
 (function(){var a=document.querySelector('.tab-panel.active'),f=document.querySelector('.src');if(a&&f)a.appendChild(f)})();
+function movePill(animate){
+  var pill=document.getElementById('tab-pill'),b=document.querySelector('.tab-btn.active');
+  if(!pill||!b)return;
+  var padX=5,padY=-3;
+  pill.classList.toggle('anim',!!animate);
+  pill.style.width=(b.offsetWidth+padX*2)+'px';
+  pill.style.height=(b.offsetHeight+padY*2)+'px';
+  pill.style.transform='translate('+(b.offsetLeft-padX)+'px,'+(b.offsetTop-padY)+'px)';
+  pill.classList.add('on');
+}
+window.addEventListener('resize',function(){movePill(false)});
+window.addEventListener('load',function(){movePill(false)});
+try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){movePill(false)})}catch(e){}
+movePill(false);
 function fitHero(){var h=document.getElementById('hero-title');if(!h)return;var fs=15;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}}
 fitHero();window.addEventListener('resize',fitHero);window.addEventListener('load',fitHero);
 try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHero)}catch(e){}
