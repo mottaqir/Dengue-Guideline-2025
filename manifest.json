@@ -2,11 +2,11 @@
   "name": "National Guideline for Clinical Mx of Dengue 2025",
   "short_name": "Dengue Guide",
   "description": "DGHS Bangladesh — National Guideline for Clinical Management of Dengue, 5th Edition 2025",
-  "start_url": "./dengue_guideline_2025.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#0B2D42",
-  "theme_color": "#0B2D42",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "lang": "en",
   "scope": "./",
   "categories": ["medical", "health", "education"],
@@ -27,7 +27,7 @@
       "name": "Fluid Calculator",
       "short_name": "Fluid Calc",
       "description": "IV Fluid Calculator for Dengue",
-      "url": "./dengue_guideline_2025.html#calculators",
+      "url": "./#calculators",
       "icons": [{ "src": "icon-96x96.png", "sizes": "96x96" }]
     }
   ]
