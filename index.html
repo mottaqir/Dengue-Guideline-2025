@@ -189,7 +189,7 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 .rd-x:active{background:rgba(255,255,255,.15)}
 .rd-nav{display:flex;align-items:center;gap:6px;padding:0 10px 8px;font-size:12px;color:var(--muted);flex-shrink:0}
 .rd-nav button{background:var(--white);color:var(--navy);border:1px solid var(--border);border-radius:8px;min-width:34px;height:34px;font-size:14px;padding:0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.rd-nav select{flex:1;min-width:0;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;padding:0 6px;-webkit-appearance:none;appearance:none;text-overflow:ellipsis}
+.rd-nav .__x{flex:1;min-width:0;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;padding:0 6px;-webkit-appearance:none;appearance:none;text-overflow:ellipsis}
 .rd-nav input{width:46px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--white);color:var(--navy);font-size:16px;text-align:center;padding:0;-webkit-appearance:none}
 .rd-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 14px 14px;font-size:13.5px;line-height:1.6;border-top:1px solid var(--border)}
 .rd:not(.solid) .rd-body{flex:none;max-height:40vh;margin:0 10px;padding:6px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(13,14,16,.72)}
@@ -203,6 +203,33 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 .rd-res .pn{display:inline-block;font-size:10.5px;font-weight:700;color:var(--amber);margin-bottom:2px}
 .rd-hint{color:var(--muted);font-size:12.5px;line-height:1.6;padding:4px 0}
 .rd-foot{font-size:10.5px;color:var(--muted);padding:6px 12px calc(6px + env(safe-area-inset-bottom));border-top:1px solid var(--border);line-height:1.4;flex-shrink:0}
+.rd-nav{position:relative}
+.rd-nav .rd-chap{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 10px;text-align:left;font-size:13px}
+.rd-chap,.rd-mi{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.rd-chap .rdct{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rd-chap .rdcar{color:var(--muted);font-size:11px;flex-shrink:0}
+.rd-menu{display:none;position:absolute;left:10px;right:10px;top:0;z-index:6;max-height:min(64vh,460px);overflow-y:auto;-webkit-overflow-scrolling:touch;background:#0D0E10;border:1px solid #2E3138;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.65);padding:4px}
+.rd-menu.open{display:block}
+.rd-mi{display:flex;align-items:baseline;gap:10px;width:100%;text-align:left;background:none;border:none;border-radius:8px;padding:8px 9px;color:var(--slate);font-size:13px;line-height:1.35;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rd-mi .mt{flex:1;min-width:0}
+.rd-mi .mp{flex-shrink:0;color:var(--amber);font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.rd-mi.l0{color:var(--navy);font-weight:600;margin-top:5px;border-top:1px solid var(--border);border-radius:0 0 8px 8px;padding-top:11px}
+.rd-mi.l0:first-child{margin-top:0;border-top:none}
+.rd-mi.l3{padding-left:9px}
+.rd-mi.l1{padding-left:16px}
+.rd-mi.l2{padding-left:32px;font-size:12px;color:var(--muted)}
+.rd-mi.cur{background:rgba(34,211,238,.14);color:#fff;box-shadow:inset 3px 0 0 var(--teal)}
+.rd-mi:active{background:rgba(255,255,255,.09)}
+.toc-h{font-size:15px;font-weight:700;color:var(--navy);margin:6px 0 4px}
+.toc-n{font-size:11px;color:var(--muted);margin:0 0 8px}
+.toc{list-style:none;margin:0;padding:0;overflow:hidden}
+.toc li{overflow:hidden;text-align:justify;line-height:1.45;padding:4px 0;font-size:13.5px;color:var(--slate)}
+.toc li::after{float:left;width:0;white-space:nowrap;font-weight:400;color:#5B6572;content:". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "}
+.toc li .t{position:relative;z-index:1;background:#000;padding-right:.35em}
+.toc li .n{position:relative;z-index:1;float:right;background:#000;padding:0 0 0 .4em;min-width:1.4em;text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.toc li.l0{font-weight:600;color:var(--navy);margin-top:8px}
+.toc li.l3{padding-left:0}
+.toc li.l2{padding-left:16px;font-size:12.5px;color:var(--muted)}
 a.pglink{color:var(--amber);text-decoration:underline dotted;text-underline-offset:2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 </style>
 </head>
@@ -711,12 +738,13 @@ try{if(navigator.standalone===true)document.documentElement.classList.add('ios-s
     <button class="rd-x" type="button" onclick="closeReader()" aria-label="Close">&#10005;</button>
   </div>
   <div class="rd-nav">
-    <select id="rd-toc" aria-label="Chapter"></select>
+    <button type="button" class="rd-chap" id="rd-toc" aria-haspopup="listbox" aria-expanded="false"><span class="rdct" id="rd-chap-t">Chapters</span><span class="rdcar">▾</span></button>
     <button type="button" id="rd-prev" aria-label="Previous page">◀</button>
     <input id="rd-pn" type="number" inputmode="numeric" min="1" aria-label="Page number">
     <span id="rd-tot"></span>
     <button type="button" id="rd-next" aria-label="Next page">▶</button>
   </div>
+  <div class="rd-menu" id="rd-menu" role="listbox" aria-label="Chapters"></div>
   <div class="rd-body" id="rd-body"></div>
   <div class="rd-foot">Text is extracted automatically from the PDF — tables and flowcharts may lose their layout. Page numbers = PDF page numbers. Check the original PDF page before any clinical decision.</div>
 </div>
@@ -894,14 +922,7 @@ function calcFluid(){
 
 /* ───── Full-text reader (PDF text, page numbers = PDF page numbers) ───── */
 var RD_PAGES=null;
-var RD_TOC=[["Contents",6],["Preface",9],["Abbreviations",12],["Level of evidence",13],["Aims & objectives",14],
-["PART — Dengue in adults",15],["1.1",16],["1.2",16],["1.4",19],["1.5",20],["2.1",22],["2.2",24],["2.3",24],["3.1",25],["3.2",35],
-["4.1",36],["4.1.5",38],["4.1.6",38],["5.1",42],["5.2",42],["5.3",46],["5.4 Fluid management",49],["5.4.2",50],["5.4.3 (Table 9)",51],["5.4.4 Non-shock",52],
-["5.4.5 Refractory shock",55],["5.4.7",55],["5.5",57],["5.6",58],["5.7",58],["5.8",59],["5.9",59],["5.10",60],["5.11",60],["5.12",60],["5.13",62],
-["PART — Dengue in children",65],["6.1",66],["6.2",66],["6.3",67],["6.4",68],["6.5 Home care",69],["6.6",70],["6.7",70],
-["PART — Dengue in pregnancy",84],["7.2",86],["7.3",87],["7.6",88],["7.7",88],["7.8",89],["7.8.4",90],
-["PART — Special situations",96],["8.1",97],["9.1",104],["9.3",105],["9.7",107],
-["PART — Prevention",108],["10.1",109],["10.2",109],["References",114],["Annexures",116]];
+var RD_TOC=[[3,"Dengue Technical Review Committee",2,6],[3,"Contributor",3,6],[3,"Copyright & Disclaiming",5,6],[3,"Contents",6,0],[3,"Messages from Director General of Health Services",8,6],[3,"Preface",9,6],[3,"Message from Editorial Board",10,6],[3,"Acknowledgement",11,6],[3,"Abbreviation and acronym",12,6],[3,"Level of evidence",13,6],[3,"Aims of this guideline",14,6],[3,"To whom this guideline is intended",14,6],[0,"Dengue in adult",15,6],[1,"1.1 Introduction",16,6],[1,"1.2 Epidemiology",16,6],[2,"1.2.1 Dengue Virus",17,6],[2,"1.2.2 Dengue Vector",18,6],[1,"1.3 Transmission Cycle",19,6],[1,"1.4 Global Burden of Disease",19,6],[1,"1.5 Dengue Burden in Bangladesh",20,6],[2,"1.5.1 Dengue mortality in Bangladesh",21,6],[1,"2.1 Pathophysiology of Dengue Infection",22,6],[2,"2.1.1 Antibody-dependent enhancement",22,6],[2,"2.1.2 T-cell mediated killing of dengue virus in heterotypic reinfection",22,6],[2,"2.1.3 Complement activation by virus-antibody complexes",22,6],[2,"2.1.4 Cytokine storm",22,6],[2,"2.1.5 Vasculopathy",22,6],[2,"2.1.6 Coagulopathy",23,6],[1,"2.2 Causes of bleeding in Dengue Syndrome",24,6],[1,"2.3 Factors Responsible for DHF/DSS",24,6],[1,"3.1 Classification and clinical manifestations of Dengue",25,6],[2,"3.1.1 Asymptomatic Infection",25,6],[2,"3.1.2 Symptomatic Infection",25,6],[1,"3.2 Differential Diagnosis of Dengue Fever",35,6],[1,"4.1 Laboratory Investigations for Dengue",36,6],[2,"4.1.1 Laboratory Tests for Diagnosis and Monitoring",36,6],[2,"4.1.2 Biochemical Tests",37,6],[2,"4.1.3 Coagulation Profile",37,6],[2,"4.1.4 Other tests",38,6],[2,"4.1.5 Time and frequency of investigation",38,6],[2,"4.1.6 Role of point of care (POC) ultrasound in dengue",38,6],[1,"5.1 Dengue Case Definition",42,6],[1,"5.2 Outpatient Assessment and Management of a Patient with Dengue Fever",42,6],[1,"5.3 Inpatient Management of Dengue Patient",46,6],[1,"5.4 Fluid management in dengue",49,6],[2,"5.4.1 Febrile phase",49,6],[2,"5.4.2 Critical Phase",50,6],[2,"5.4.3 Types of fluids required for Intravenous therapy",51,6],[2,"5.4.4 Non shock critical stage fluid management",52,6],[2,"5.4.5 Patients not responding to fluid resuscitation (or with refractory shock)",55,6],[2,"5.4.6 Management of diarrhoea in dengue patients",55,6],[2,"5.4.7 Fluid Overloaded Patient",55,7],[1,"5.5 Treatment of bleeding",57,7],[1,"5.6 Indications for Platelet Concentrate",58,7],[1,"5.7 Calcium Replacement",58,7],[1,"5.8 Glucose control",59,7],[1,"5.9 Electrolyte and acid-base imbalances",59,7],[1,"5.10 Signs of recovery",60,7],[1,"5.11 Discharge Criteria",60,7],[1,"5.12 Dengue with Complications",60,7],[1,"5.13 Some Important Notes",62,7],[0,"Dengue in Children",65,7],[1,"6.1 Introduction",66,7],[1,"6.2 Classification & clinical features",66,7],[1,"6.3 Investigations",67,7],[2,"6.3.4 Other tests",67,7],[2,"6.3.5 Additional test",68,7],[1,"6.4 Outpatient Assessment and Management for Children",68,7],[1,"6.5 Home management of children",69,7],[1,"6.6 Fluid Management Strategy",70,7],[1,"6.7 Inpatient Management of Dengue in Children",70,7],[0,"Dengue fever and Pregnancy",84,7],[1,"7.1 Introduction",85,7],[1,"7.2 Impact of pregnancy on DF",86,7],[1,"7.3 Early management and admission/referral",87,7],[1,"7.4 First contact care level/OPD",87,7],[1,"7.5 Level of care of DF with Pregnancy by whom and where?",87,7],[1,"7.6 Admission criteria",88,7],[1,"7.7 Inpatient management of dengue in pregnancy",88,7],[1,"7.8 Assessment of patient once admitted to relevant unit",89,7],[2,"7.8.1 Afebrile phase monitoring",89,7],[2,"7.8.2 Leaking phase (critical phase) monitoring",89,7],[2,"7.8.3 Features of dengue shock in pregnancy",90,7],[2,"7.8.4 Special Clinical Situations with Pregnancy",90,7],[0,"Special Clinical Situations",96,7],[1,"8.1 Special Clinical Situations",97,7],[1,"9.1 Indications for HDU/ ICU Admission",104,7],[1,"9.2 ICU Management Considerations",105,7],[1,"9.3 Indication of mechanical ventilation in dengue patients",105,7],[1,"9.4 Investigations in HDU/ICU",106,7],[1,"9.5 Weaning Criteria for Mechanical Ventilation in Dengue Patients",106,7],[1,"9.6 Spontaneous breathing trial (SBT)",107,7],[1,"9.7 Criteria for Discharge of Dengue Patients from ICU",107,7],[0,"Community Engagement and Prevention",108,7],[1,"10.1 Household",109,7],[1,"10.2 Community",109,7],[1,"10.3 Institutions (Hospitals, schools, colleges, other institutions, offices, etc.)",110,7],[0,"References",114,7],[0,"Annexures",116,7]];  /* [level, title, page, source-contents-page] — parsed from the PDF's own Contents (pp.6–7) */
 var rd={page:1,terms:[],q:"",mode:"home"};
 function rdData(){
   if(!RD_PAGES){try{RD_PAGES=JSON.parse(document.getElementById('pdf-pages').textContent)}catch(e){RD_PAGES=[]}}
@@ -922,10 +943,15 @@ function rdHL(raw,terms){
 }
 function rdEl(id){return document.getElementById(id)}
 function rdInit(){
-  if(rdEl('rd-toc').options.length)return;
-  var n=rdData().length,sel=rdEl('rd-toc');
-  sel.innerHTML='<option value="">Chapters…</option>'+RD_TOC.map(function(x){return '<option value="'+x[1]+'">p.'+x[1]+' — '+rdEsc(x[0])+'</option>'}).join('');
-  sel.onchange=function(){if(this.value){rdOpenPage(+this.value,rd.terms);this.value=''}};
+  if(rd.inited)return;rd.inited=true;
+  var n=rdData().length;
+  rdEl('rd-menu').innerHTML=RD_TOC.map(function(x,i){return '<button type="button" class="rd-mi l'+x[0]+'" data-i="'+i+'" role="option"><span class="mt">'+rdEsc(x[1])+'</span><span class="mp">p.'+x[2]+'</span></button>'}).join('');
+  rdEl('rd-menu').addEventListener('click',function(e){var b=e.target.closest('.rd-mi');if(!b)return;rdMenu(false);rdOpenPage(RD_TOC[+b.getAttribute('data-i')][2],rd.terms)});
+  rdEl('rd-toc').addEventListener('click',function(){rdMenu(!rdEl('rd-menu').classList.contains('open'))});
+  /* a tap anywhere else while the list is open only closes the list */
+  rdEl('reader').addEventListener('click',function(e){
+    if(rdEl('rd-menu').classList.contains('open')&&!e.target.closest('#rd-menu')&&!e.target.closest('#rd-toc')){e.preventDefault();e.stopPropagation();rdMenu(false)}
+  },true);
   rdEl('rd-tot').textContent='/ '+n;
   rdEl('rd-pn').max=n;
   rdEl('rd-prev').onclick=function(){rdStep(-1)};
@@ -936,6 +962,35 @@ function rdInit(){
   q.addEventListener('input',function(){clearTimeout(tm);tm=setTimeout(function(){rdSearch(q.value)},220)});
   q.addEventListener('keydown',function(e){if(e.key==='Enter'){clearTimeout(tm);rdSearch(q.value);q.blur()}});
 }
+function rdChapIdx(n){
+  if(n===6||n===7)return RD_TOC.findIndex(function(x){return x[1]==='Contents'});
+  var k=-1;for(var i=0;i<RD_TOC.length;i++){if(RD_TOC[i][2]<=n)k=i}
+  return k;
+}
+function rdSetChap(){
+  var k=(rd.mode==='page')?rdChapIdx(rd.page):-1;
+  rdEl('rd-chap-t').textContent=k>=0?RD_TOC[k][1]:(rd.mode==='page'?'Cover':'Chapters');
+  return k;
+}
+function rdMenu(open){
+  var m=rdEl('rd-menu'),b=rdEl('rd-toc'),nav=document.querySelector('.rd-nav');
+  b.setAttribute('aria-expanded',String(!!open));
+  if(!open){m.classList.remove('open');return}
+  try{rdEl('rd-q').blur()}catch(e){}
+  m.style.top=(nav.offsetTop+nav.offsetHeight-4)+'px';
+  var cur=m.querySelector('.cur');if(cur)cur.classList.remove('cur');
+  var k=rd.mode==='page'?rdChapIdx(rd.page):-1;
+  m.classList.add('open');
+  if(k>=0){var el=m.querySelector('[data-i="'+k+'"]');el.classList.add('cur');m.scrollTop=Math.max(0,el.offsetTop-70)}
+  else m.scrollTop=0;
+}
+function rdTocHTML(n){
+  var items=RD_TOC.filter(function(x){return x[3]===n});
+  var lis=items.map(function(x){
+    return '<li class="l'+x[0]+'"><span class="t">'+rdHL(x[1],rd.terms)+'</span><a class="n pglink" data-pg="'+x[2]+'">'+x[2]+'</a></li>';
+  }).join('');
+  return '<div class="toc-h">Contents'+(n===7?' (continued)':'')+'</div><div class="toc-n">Rebuilt from the PDF’s own contents list — tap a page number to open that page.</div><ul class="toc">'+lis+'</ul>';
+}
 function openReader(page){
   rdInit();
   rdEl('reader').classList.add('open');
@@ -944,7 +999,7 @@ function openReader(page){
 }
 function closeReader(){rdEl('reader').classList.remove('open');try{rdEl('rd-q').blur()}catch(e){}}
 function rdHome(){
-  rd.mode='home';rdEl('reader').classList.remove('solid');
+  rd.mode='home';rdEl('reader').classList.remove('solid');rdMenu(false);rdSetChap();
   rdEl('rd-pn').value='';
   rdEl('rd-body').innerHTML='<div class="rd-hint"><b>📖 Full text — DGHS PDF, 5th Ed. 2025.</b><br>Search every page of the PDF, or pick a chapter above. Several words = pages containing <b>all</b> of them. Tap a result to open the page with your words highlighted.</div>';
 }
@@ -953,11 +1008,13 @@ function rdOpenPage(n,terms){
   var P=rdData();
   if(!P.length){rdEl('rd-body').innerHTML='<div class="rd-hint">Full text is not available.</div>';return}
   n=Math.min(Math.max(Math.round(n)||1,1),P.length);
-  rd.page=n;rd.terms=terms||[];rd.mode='page';rdEl('reader').classList.add('solid');
+  rd.page=n;rd.terms=terms||[];rd.mode='page';rdEl('reader').classList.add('solid');rdMenu(false);
   rdEl('rd-pn').value=n;
   var txt=P[n-1]||'';
   var body;
-  if(txt.length<30){
+  if(n===6||n===7){
+    body=rdTocHTML(n);
+  }else if(txt.length<30){
     body='<div class="rd-hint">No extractable text on p.'+n+' (figure, flowchart or image page'+(txt?': “'+rdEsc(txt)+'”':'')+'). Please open the original PDF page '+n+'.</div>';
   }else{
     body='<div class="rd-page">'+txt.split('\n').map(function(l){
@@ -968,6 +1025,7 @@ function rdOpenPage(n,terms){
   var back=rd.q?'<a onclick="rdSearch(rd.q)">← Results for “'+rdEsc(rd.q)+'”</a>':'<span></span>';
   rdEl('rd-body').innerHTML='<div class="rd-pghead">'+back+'<span>PDF page '+n+' / '+P.length+'</span></div>'+body;
   var b=rdEl('rd-body'),mk=b.querySelector('mark');
+  rdSetChap();
   b.scrollTop=0;
   if(mk){b.scrollTop=Math.max(0,mk.offsetTop-b.offsetTop-70)}
 }
@@ -976,7 +1034,7 @@ function rdSearch(q){
   var qi=rdEl('rd-q');if(qi.value!==q&&q!==undefined&&qi.value.trim()!==rd.q)qi.value=q;
   if(!rd.q){rdHome();return}
   var P=rdData(),terms=rd.q.toLowerCase().split(/\s+/).filter(Boolean);
-  rd.terms=terms;rd.mode='results';rdEl('reader').classList.add('solid');
+  rd.terms=terms;rd.mode='results';rdEl('reader').classList.add('solid');rdMenu(false);rdSetChap();
   var hits=[];
   for(var i=0;i<P.length;i++){
     var low=P[i].toLowerCase(),score=0,ok=true;
@@ -998,7 +1056,7 @@ function rdSearch(q){
     shown.forEach(function(h){
       var raw=P[h.p-1],at=h.low.indexOf(terms[0]);
       var a=Math.max(0,at-90),e=Math.min(raw.length,at+terms[0].length+110);
-      var sn=raw.slice(a,e).replace(/\s*\n\s*/g,' ');
+      var sn=raw.slice(a,e).replace(/\s*\n\s*/g,' ').replace(/\.{4,}/g,' … ');
       html+='<button type="button" class="rd-res" onclick="rdOpenPage('+h.p+',rd.terms)"><span class="pn">p.'+h.p+' · '+h.score+' match'+(h.score>1?'es':'')+'</span><br>'+(a>0?'…':'')+rdHL(sn,terms)+(e<raw.length?'…':'')+'</button>';
     });
   }
