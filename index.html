@@ -71,7 +71,8 @@ html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;rig
 .hero-t{flex:1;min-width:0;text-align:left}
 .hero h1{font-family:'Open Sans',system-ui,sans-serif;font-size:17px;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin:0;color:#fff;white-space:nowrap;overflow:hidden}
 .hero-sub{font-family:'Courier New',Courier,monospace;font-size:.78rem;line-height:1.2;letter-spacing:.06em;color:var(--teal);margin-top:3px;white-space:nowrap}
-.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 2px 0;flex:1;min-height:0;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 2px 0;flex:1;min-height:0;display:block;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+ -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade,0px));mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade,0px))}
 .tab-nav{position:relative;display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;margin-bottom:8px;flex-shrink:0}
 .tab-btn{display:flex;align-items:center;justify-content:flex-start;gap:5px;background:none;border:none;position:relative;z-index:1;padding:7px 4px;white-space:nowrap;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .2s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;text-align:center}
 .tab-btn .ti{display:inline-flex;align-items:center;justify-content:center;flex:0 0 17px;width:17px;height:17px;font-size:13px;line-height:1;text-align:center}
@@ -90,7 +91,7 @@ html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;rig
 @media(max-width:340px){.tab-btn{gap:3px;padding:7px 2px;font-size:10px}}
 .tab-btn:hover{color:var(--teal)}
 .tab-btn.active{color:var(--teal);font-weight:600}
-.tab-panel{display:none}.tab-panel.active{display:block;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:6px}
+.tab-panel{display:none}.tab-panel.active{display:block;padding-bottom:6px}
 .acc{margin-bottom:6px;border-radius:var(--r);overflow:hidden}
 .acc-hdr{width:100%;background:var(--white);border:1px solid var(--border);border-radius:var(--r);text-align:left;padding:8px 12px;color:var(--navy);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;font-family:'Inter',sans-serif}
 .acc-hdr:hover{background:#F1F5F9}
@@ -181,7 +182,7 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 /* running text is justified (boxed and un-boxed); headings, table cells, labels and result rows stay as they are */
 .acc-in p,.acc-in li,.callout>div,.abox li,.abox p,.ibox li,.ibox p,.srcnote,.srcd,.sc p,.sc li,.tab-panel>p{text-align:justify;text-justify:inter-word;-webkit-hyphens:manual;hyphens:manual}
 .tbl td,.tbl th,.stbl td,.stbl th,.stbl td:first-child,.card h4,.abox h4,.ibox h4,.sc h4,.stl{text-align:left}
-.tab-panel::-webkit-scrollbar{width:0;height:0}
+.tab-panel::-webkit-scrollbar,.wrap::-webkit-scrollbar{width:0;height:0}
 .ref{color:var(--muted);font-size:10.5px;font-weight:400;white-space:normal}
 .srcnote{--bar:var(--amber);font-size:11px;color:var(--muted);background:rgba(251,191,36,.06);padding:5px 9px 5px 13px;margin:8px 0;line-height:1.5}
 .card,.abox,.srcnote{position:relative;border:1px solid #2E3138;border-radius:4px;clip-path:inset(0 round 4px)}
@@ -777,6 +778,7 @@ function showTab(id){
   pn.classList.add('active');
   const f=document.querySelector('.src');if(f)pn.appendChild(f); /* footer sits at the end of the scrolling content */
   document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')});
+  const w=document.querySelector('.wrap');if(w){w.scrollTop=0;w.style.setProperty('--fade','0px')}   /* tab bar + content scroll together; a new tab starts at the top */
 }
 function toggleAcc(btn){
   const body=btn.nextElementSibling;
@@ -1123,6 +1125,10 @@ document.addEventListener('click',function(e){
   openReader(parseInt(a.getAttribute('data-pg'),10));
 },true);
 (function(){var a=document.querySelector('.tab-panel.active'),f=document.querySelector('.src');if(a&&f)a.appendChild(f)})();
+/* fade: content dissolves as it scrolls up under the header (fade zone grows from 0 to 28px over the first 28px of scroll) */
+(function(){var w=document.querySelector('.wrap');if(!w)return;var t=0;
+  function f(){t=0;w.style.setProperty('--fade',Math.min(w.scrollTop,28)+'px')}
+  w.addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(f)},{passive:true});f()})();
 
 /* ───── Update checker: opens instantly from cache, then every ~5 s asks the server (tiny HEAD request) whether index.html changed.
    Unchanged -> nothing is downloaded. Changed -> download once, store in the cache, reload (when it won't disturb you). ───── */
