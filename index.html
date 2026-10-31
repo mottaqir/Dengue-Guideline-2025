@@ -58,7 +58,7 @@
   }
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Open+Sans:wght@700&display=swap');
 :root{color-scheme:dark;--red:#F87171;--red-lt:rgba(248,113,113,.14);--amber:#FBBF24;--amber-lt:rgba(251,191,36,.12);--green:#4ADE80;--green-lt:rgba(74,222,128,.12);--teal:#22D3EE;--teal-lt:rgba(34,211,238,.12);--navy:#F1F5F9;--slate:#CBD5E1;--muted:#94A3B8;--bg:#000000;--white:#0D0E10;--border:#26282D;--shadow:none;--r:10px;--hdr-bg:#000000}
 *{box-sizing:border-box;margin:0;padding:0}
 html{background:#000;-webkit-text-size-adjust:100%}
@@ -67,24 +67,25 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--navy);line-
    at the very top gives WebKit a solid colour to sample. background-clip:text with no text keeps it invisible. */
 .ios-top-strip{display:none}
 html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;right:0;height:11px;z-index:300;pointer-events:none;background-color:var(--hdr-bg);-webkit-background-clip:text;background-clip:text}
-.hero{background:var(--hdr-bg);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 10px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.hero{background:var(--hdr-bg);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 2px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0}
 .hero-t{flex:1;min-width:0;text-align:left}
-.hero h1{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin:0;color:#fff;white-space:nowrap;overflow:hidden}
+.hero h1{font-family:'Open Sans',system-ui,sans-serif;font-size:17px;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin:0;color:#fff;white-space:nowrap;overflow:hidden}
 .hero-sub{font-family:'Courier New',Courier,monospace;font-size:.78rem;line-height:1.2;letter-spacing:.06em;color:var(--teal);margin-top:3px;white-space:nowrap}
-.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 10px 0;flex:1;min-height:0;display:flex;flex-direction:column}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 2px 0;flex:1;min-height:0;display:flex;flex-direction:column}
 .tab-nav{position:relative;display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;margin-bottom:8px;flex-shrink:0}
 .tab-btn{display:flex;align-items:center;justify-content:flex-start;gap:5px;background:none;border:none;position:relative;z-index:1;padding:7px 4px;white-space:nowrap;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .2s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;text-align:center}
 .tab-btn .ti{display:inline-flex;align-items:center;justify-content:center;flex:0 0 17px;width:17px;height:17px;font-size:13px;line-height:1;text-align:center}
 
-/* liquid-glass pill behind the active tab (slides between tabs) */
-.tab-pill{position:absolute;left:0;top:0;width:0;height:0;z-index:0;border-radius:999px;pointer-events:none;opacity:0;
- background:radial-gradient(120% 140% at 25% 0%,rgba(34,211,238,.26),rgba(34,211,238,0) 62%),linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,.06) 55%,rgba(255,255,255,.12));
- border:1px solid rgba(255,255,255,.22);
- box-shadow:inset 0 1px 1px rgba(255,255,255,.5),inset 0 -1px 2px rgba(255,255,255,.14),0 5px 16px rgba(0,0,0,.6);
- -webkit-backdrop-filter:blur(10px) saturate(1.8);backdrop-filter:blur(10px) saturate(1.8)}
-.tab-pill.on{opacity:1}
-.tab-pill.anim{transition:transform .42s cubic-bezier(.3,1.25,.5,1),width .42s cubic-bezier(.3,1.25,.5,1),height .3s ease}
-@media(prefers-reduced-motion:reduce){.tab-pill.anim{transition:none}}
+/* active tab: 45° shine sweeping left -> right */
+.tab-btn.active>span:not(.ti){
+ background:linear-gradient(45deg,var(--teal) 0%,var(--teal) 40%,#fff 50%,var(--teal) 60%,var(--teal) 100%);
+ background-size:320% 100%;background-position:100% 0;
+ -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+ animation:tabShine 3.4s ease-in-out infinite}
+.tab-btn.active .ti{animation:tabIcon 3.4s ease-in-out infinite}
+@keyframes tabShine{0%{background-position:100% 0}38%,100%{background-position:0 0}}
+@keyframes tabIcon{0%,100%{filter:none}6%{filter:brightness(1.6) drop-shadow(0 0 4px rgba(255,255,255,.6))}18%{filter:none}}
+@media(prefers-reduced-motion:reduce){.tab-btn.active>span:not(.ti),.tab-btn.active .ti{animation:none}.tab-btn.active>span:not(.ti){background:none;-webkit-text-fill-color:currentColor;color:var(--teal)}}
 @media(min-width:480px){.tab-nav{grid-template-columns:repeat(4,1fr);justify-content:normal}.tab-btn{justify-content:center;padding:7px 2px}}
 @media(max-width:340px){.tab-btn{gap:3px;padding:7px 2px;font-size:10px}}
 .tab-btn:hover{color:var(--teal)}
@@ -99,14 +100,14 @@ html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;rig
 .acc-hdr[aria-expanded="true"] .acc-arr{transform:rotate(180deg)}
 .acc-body{background:var(--white);max-height:0;overflow:hidden;transition:max-height .35s ease;border-top:1px solid var(--border)}
 .acc-body.open{max-height:4000px}
-.acc-in{padding:15px 17px 17px}
+.acc-in{padding:15px 2px 17px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 @media(max-width:560px){.g2,.g3{grid-template-columns:1fr}}
-.card{border-radius:8px;padding:12px 14px;border-left:4px solid}
-.cr{background:var(--red-lt);border-color:var(--red)}.ca{background:var(--amber-lt);border-color:var(--amber)}
-.cg{background:var(--green-lt);border-color:var(--green)}.ct{background:var(--teal-lt);border-color:var(--teal)}
-.cp{background:#F3E8FF;border-color:#9333EA}
+.card{padding:12px 14px 12px 16px}
+.cr{background:var(--red-lt);--bar:var(--red)}.ca{background:var(--amber-lt);--bar:var(--amber)}
+.cg{background:var(--green-lt);--bar:var(--green)}.ct{background:var(--teal-lt);--bar:var(--teal)}
+.cp{background:#F3E8FF;--bar:#9333EA}
 .card h4{font-size:12.5px;font-weight:700;margin-bottom:6px}.card ul{padding-left:15px}.card li{font-size:12.5px;margin-bottom:3px}
 .badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:10.5px;font-weight:600;margin-left:7px}
 .br{background:var(--red-lt);color:var(--red)}.ba{background:var(--amber-lt);color:var(--amber)}.bg{background:var(--green-lt);color:var(--green)}
@@ -151,7 +152,7 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 .blbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px}
 .ibox{border-radius:9px;padding:12px;margin:10px 0;font-size:12.5px;line-height:1.65}
 .ibox h4{font-size:13px;font-weight:700;margin-bottom:6px}.ibox ul{padding-left:16px}
-.abox{border-radius:9px;padding:12px;font-size:12.5px;line-height:1.65;border-left:4px solid}
+.abox{padding:12px 12px 12px 16px;font-size:12.5px;line-height:1.65}
 .abox h4{font-size:12.5px;font-weight:700;margin-bottom:6px}.abox ul{padding-left:16px}
 .fres{background:linear-gradient(135deg,rgba(14,116,144,.06),rgba(14,116,144,.02));border:1px solid var(--teal);border-radius:9px;padding:13px;margin-top:11px}
 .fres h4{color:var(--teal);font-size:12.5px;font-weight:700;margin-bottom:9px}
@@ -172,14 +173,16 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 .tbl th,.stbl th{background:#1B1D22;color:#E2E8F0}
 .tbl tr:nth-child(even) td,.stbl tr:nth-child(even) td{background:rgba(255,255,255,.03)}
 .tbl td,.stbl td{border-bottom-color:var(--border)}
-.cp{background:rgba(168,85,247,.16);border-color:#A855F7}
+.cp{background:rgba(168,85,247,.16);--bar:#A855F7}
 .cw{background:rgba(251,146,60,.12);border:1px solid rgba(253,186,116,.45)}
 .sn{color:#031317}
 .cfl input,.cfl select{color-scheme:dark}
 .cfl input::placeholder{color:#64748B}
 .tab-panel::-webkit-scrollbar{width:0;height:0}
 .ref{color:var(--muted);font-size:10.5px;font-weight:400;white-space:normal}
-.srcnote{font-size:11px;color:var(--muted);border-left:3px solid var(--amber);background:rgba(251,191,36,.06);padding:5px 9px;margin:8px 0;line-height:1.5;border-radius:0 6px 6px 0}
+.srcnote{--bar:var(--amber);font-size:11px;color:var(--muted);background:rgba(251,191,36,.06);padding:5px 9px 5px 13px;margin:8px 0;line-height:1.5}
+.card,.abox,.srcnote{position:relative;border:1px solid #2E3138;border-radius:4px;clip-path:inset(0 round 4px)}
+.card::before,.abox::before,.srcnote::before{content:"";position:absolute;left:-1px;top:-1px;bottom:-1px;width:4px;background:var(--bar,var(--muted))}
 .srcnote b{color:var(--amber);font-weight:600}
 .srcitem{padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.5}
 .srcitem:last-child{border-bottom:none}
@@ -263,7 +266,6 @@ try{if(navigator.standalone===true)document.documentElement.classList.add('ios-s
 </div>
 <div class="wrap">
 <div class="tab-nav">
-  <span class="tab-pill" id="tab-pill" aria-hidden="true"></span>
   <button class="tab-btn active" onclick="showTab('overview')"><span class="ti">📋</span><span>Overview</span></button>
   <button class="tab-btn" onclick="showTab('adult')"><span class="ti">👨</span><span>Adult</span></button>
   <button class="tab-btn" onclick="showTab('children')"><span class="ti">👶</span><span>Children</span></button>
@@ -772,7 +774,6 @@ function showTab(id){
   pn.classList.add('active');
   const f=document.querySelector('.src');if(f)pn.appendChild(f); /* footer sits at the end of the scrolling content */
   document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')});
-  if(window.movePill)movePill(true);
 }
 function toggleAcc(btn){
   const body=btn.nextElementSibling;
@@ -876,7 +877,7 @@ function calcHCT(){
   else if(drop>=10){aBg=HCT_BG.red;aBd=HCT_C.red;aHTML='<h4 style="color:'+HCT_C.red+'">🚨 Immediate Action (Haemorrhage Suspected)</h4><ul><li>Send blood group and cross-match immediately</li><li>Prepare PCV 5 ml/kg or FWB 10 ml/kg</li><li>Initiate NS resuscitation if in shock</li><li>Identify bleeding source</li></ul>'}
   else if(diff>=0&&rise<10){aBg=HCT_BG.green;aBd=HCT_C.green;aHTML='<h4 style="color:'+HCT_C.green+'">✅ Next Steps</h4><ul><li>Repeat serial HCT every 6–8 hours</li><li>Continue monitoring for warning signs</li><li>Follow-up CBC on 1st afebrile day</li></ul>'}
   else{aBg=HCT_BG.teal;aBd=HCT_C.teal;aHTML='<h4 style="color:'+HCT_C.teal+'">📋 Next Steps</h4><ul><li>'+(ctx==='shock'?'Repeat HCT 3-hourly and before/after each bolus':'Repeat serial HCT every 3–6 hours')+'</li><li>Adjust fluid therapy as needed</li><li>Monitor urine output and vital signs</li></ul>'}
-  actBox.style.background=aBg;actBox.style.borderLeftColor=aBd;actBox.innerHTML=aHTML;
+  actBox.style.background=aBg;actBox.style.setProperty('--bar',aBd);actBox.innerHTML=aHTML;
 }
 
 const FLUID_CTX={nonshock:'Non-shock critical stage',comp:'Compensated shock',decomp:'Decompensated / profound shock'};
@@ -1119,21 +1120,7 @@ document.addEventListener('click',function(e){
   openReader(parseInt(a.getAttribute('data-pg'),10));
 },true);
 (function(){var a=document.querySelector('.tab-panel.active'),f=document.querySelector('.src');if(a&&f)a.appendChild(f)})();
-function movePill(animate){
-  var pill=document.getElementById('tab-pill'),b=document.querySelector('.tab-btn.active');
-  if(!pill||!b)return;
-  var padX=5,padY=-3;
-  pill.classList.toggle('anim',!!animate);
-  pill.style.width=(b.offsetWidth+padX*2)+'px';
-  pill.style.height=(b.offsetHeight+padY*2)+'px';
-  pill.style.transform='translate('+(b.offsetLeft-padX)+'px,'+(b.offsetTop-padY)+'px)';
-  pill.classList.add('on');
-}
-window.addEventListener('resize',function(){movePill(false)});
-window.addEventListener('load',function(){movePill(false)});
-try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){movePill(false)})}catch(e){}
-movePill(false);
-function fitHero(){var h=document.getElementById('hero-title');if(!h)return;var fs=15;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}}
+function fitHero(){var h=document.getElementById('hero-title');if(!h)return;var fs=17;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}}
 fitHero();window.addEventListener('resize',fitHero);window.addEventListener('load',fitHero);
 try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHero)}catch(e){}
 try{rdLinkify(document.querySelector('.wrap'))}catch(e){console.warn('linkify',e)}
