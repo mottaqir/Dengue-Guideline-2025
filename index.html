@@ -35,7 +35,7 @@
 
 <!-- ── SW Registration ── -->
 <script>
-  /* Auto-updating service worker: sw.js serves the HTML network-first, so no manual version bump is ever needed. */
+  /* Cache-first service worker (instant start). The page itself checks for a newer index.html every ~5 s — see 'update checker' below. */
   if ('serviceWorker' in navigator) {
     var hadController = !!navigator.serviceWorker.controller;
     window.addEventListener('load', () => {
@@ -1120,6 +1120,61 @@ document.addEventListener('click',function(e){
   openReader(parseInt(a.getAttribute('data-pg'),10));
 },true);
 (function(){var a=document.querySelector('.tab-panel.active'),f=document.querySelector('.src');if(a&&f)a.appendChild(f)})();
+
+/* ───── Update checker: opens instantly from cache, then every ~5 s asks the server (tiny HEAD request) whether index.html changed.
+   Unchanged -> nothing is downloaded. Changed -> download once, store in the cache, reload (when it won't disturb you). ───── */
+(function(){
+  if(!('serviceWorker' in navigator)||!window.caches||!window.fetch)return;
+  var URL_=location.origin+location.pathname, CN='dengue-runtime', EVERY=5000;
+  var busy=false, pending=false, lastReload=0;
+  function sigOf(h){return h.get('etag')||h.get('last-modified')||h.get('content-length')||''}
+  function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function safe(){
+    if(document.getElementById('reader')&&document.getElementById('reader').classList.contains('open'))return false;
+    var a=document.activeElement;if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return false;
+    var ins=document.querySelectorAll('.wrap input');for(var i=0;i<ins.length;i++){if(ins[i].value&&ins[i].type!=='hidden')return false}
+    return true;
+  }
+  function toast(){
+    if(document.getElementById('upd-toast'))return;
+    var t=document.createElement('button');t.id='upd-toast';t.type='button';
+    t.textContent='⟳ Update ready — tap to reload';
+    t.style.cssText='position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));z-index:400;background:#0D0E10;color:#22D3EE;border:1px solid #22D3EE;border-radius:999px;padding:9px 16px;font:600 12.5px Inter,system-ui,sans-serif;box-shadow:0 8px 24px rgba(0,0,0,.7)';
+    t.onclick=function(){location.reload()};
+    document.body.appendChild(t);
+  }
+  function applyPending(){
+    if(!pending)return;
+    if(safe()&&Date.now()-lastReload>15000){lastReload=Date.now();location.reload()}
+    else toast();
+  }
+  async function check(){
+    if(busy||document.visibilityState!=='visible'||navigator.onLine===false)return;
+    busy=true;
+    try{
+      if(pending){applyPending();return}
+      var cache=await caches.open(CN);
+      var cached=await cache.match(URL_,{ignoreSearch:true});
+      if(!cached)return;                                   // nothing cached yet (first visit) — the worker is still storing it
+      var head=await fetch(URL_,{method:'HEAD',cache:'no-store',headers:{'X-Update-Check':'1'}});
+      if(!head.ok)return;
+      var live=sigOf(head.headers), mine=sigOf(cached.headers);
+      if(!live||live===mine||live===lsGet('dengue-last-sig'))return;   // unchanged -> download nothing
+      var res=await fetch(URL_,{cache:'reload',headers:{'X-Update-Check':'1'}});
+      if(!res.ok)return;
+      await cache.put(URL_,res.clone());
+      lsSet('dengue-last-sig',live);                       // loop guard if HEAD/GET signatures ever differ
+      pending=true;applyPending();
+    }catch(e){}finally{busy=false}
+  }
+  window.addEventListener('load',function(){
+    setTimeout(check,1500);
+    setInterval(check,EVERY);
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')check()});
+    window.addEventListener('online',check);
+  });
+})();
 function fitHero(){var h=document.getElementById('hero-title');if(!h)return;var fs=17;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}}
 fitHero();window.addEventListener('resize',fitHero);window.addEventListener('load',fitHero);
 try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHero)}catch(e){}
