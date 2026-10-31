@@ -178,6 +178,9 @@ ul.pl{padding-left:16px}ul.pl li{font-size:12.5px;margin-bottom:4px}
 .sn{color:#031317}
 .cfl input,.cfl select{color-scheme:dark}
 .cfl input::placeholder{color:#64748B}
+/* running text is justified (boxed and un-boxed); headings, table cells, labels and result rows stay as they are */
+.acc-in p,.acc-in li,.callout>div,.abox li,.abox p,.ibox li,.ibox p,.srcnote,.srcd,.sc p,.sc li,.tab-panel>p{text-align:justify;text-justify:inter-word;-webkit-hyphens:manual;hyphens:manual}
+.tbl td,.tbl th,.stbl td,.stbl th,.stbl td:first-child,.card h4,.abox h4,.ibox h4,.sc h4,.stl{text-align:left}
 .tab-panel::-webkit-scrollbar{width:0;height:0}
 .ref{color:var(--muted);font-size:10.5px;font-weight:400;white-space:normal}
 .srcnote{--bar:var(--amber);font-size:11px;color:var(--muted);background:rgba(251,191,36,.06);padding:5px 9px 5px 13px;margin:8px 0;line-height:1.5}
