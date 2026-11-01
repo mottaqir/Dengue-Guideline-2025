@@ -263,8 +263,7 @@ a.pglink{color:var(--amber);text-decoration:underline dotted;text-underline-offs
 </style>
 </head>
 <body>
-<div class="ios-top-strip" aria-hidden="true"></div>
-<div class="sb-blur" aria-hidden="true"></div>
+<!-- EXPERIMENT: no fixed top strips; let iOS draw its own status-bar edge effect (see .ios-top-strip / .sb-blur CSS, kept but unused) -->
 <script>
 /* iOS home-screen (standalone) flag — navigator.standalone exists only on iOS WebKit. */
 try{if(navigator.standalone===true)document.documentElement.classList.add('ios-standalone')}catch(e){}
