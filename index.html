@@ -16,7 +16,7 @@
 
 <!-- ── iOS PWA support ── -->
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Dengue Guide">
 <link rel="apple-touch-icon" href="icon-192x192.png">
 <link rel="apple-touch-icon" sizes="152x152" href="icon-152x152.png">
@@ -65,14 +65,21 @@ html{background:#000;-webkit-text-size-adjust:100%}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--navy);line-height:1.55;font-size:14px;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden;overscroll-behavior:none}
 /* iOS home-screen (standalone) top-edge blur workaround — same approach as iCU Calc test-B: a painted fixed strip
    at the very top gives WebKit a solid colour to sample. background-clip:text with no text keeps it invisible. */
-.ios-top-strip{display:none}
-html.ios-standalone .ios-top-strip{display:block;position:fixed;top:0;left:0;right:0;height:11px;z-index:300;pointer-events:none;background-color:var(--hdr-bg);-webkit-background-clip:text;background-clip:text}
-.hero{background:var(--hdr-bg);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 2px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sb-blur{display:none}
+/* Status-bar blur (black-translucent): page runs under the status bar; content scrolling beneath it is blurred + dimmed, like the Claude app. */
+html.ios-standalone .sb-blur{display:block;position:fixed;top:0;left:0;right:0;height:calc(env(safe-area-inset-top,0px) + 10px);z-index:300;pointer-events:none;
+ background:linear-gradient(to bottom,rgba(0,0,0,.72),rgba(0,0,0,.35) 70%,rgba(0,0,0,0));
+ -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+ -webkit-mask-image:linear-gradient(to bottom,#000 65%,transparent);mask-image:linear-gradient(to bottom,#000 65%,transparent)}
+.hero{position:absolute;top:0;left:0;right:0;z-index:100;background:var(--hdr-bg);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 2px 8px;display:flex;align-items:center;gap:10px;transition:transform .25s ease;will-change:transform}
+.hero.hide{transform:translateY(-100%)}
 .hero-t{flex:1;min-width:0;text-align:left}
 .hero h1{font-family:'Open Sans',system-ui,sans-serif;font-size:17px;font-weight:700;line-height:1.2;letter-spacing:-.3px;margin:0;color:#fff;white-space:nowrap;overflow:hidden}
 .hero-sub{font-family:'Courier New',Courier,monospace;font-size:.78rem;line-height:1.2;letter-spacing:.06em;color:var(--teal);margin-top:3px;white-space:nowrap}
-.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 2px 0;flex:1;min-height:0;display:block;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
- -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade,0px));mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade,0px))}
+@property --mt{syntax:'<length>';inherits:true;initial-value:0px}
+.wrap{--hh:56px;--mt:var(--hh);transition:--mt .25s ease;width:100%;max-width:880px;margin:0 auto;padding:var(--hh) 2px 0;flex:1;min-height:0;display:block;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+ -webkit-mask-image:linear-gradient(to bottom,transparent 0,transparent var(--mt),#000 calc(var(--mt) + var(--fade,0px)));mask-image:linear-gradient(to bottom,transparent 0,transparent var(--mt),#000 calc(var(--mt) + var(--fade,0px)))}
+.wrap.hh{--mt:env(safe-area-inset-top,0px)}
 .tab-nav{position:relative;display:grid;grid-template-columns:repeat(4,max-content);justify-content:space-between;margin-bottom:8px;flex-shrink:0}
 .tab-btn{display:flex;align-items:center;justify-content:flex-start;gap:5px;background:none;border:none;position:relative;z-index:1;padding:7px 4px;white-space:nowrap;font-size:11px;font-weight:500;color:var(--muted);cursor:pointer;transition:color .2s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif;text-align:center}
 .tab-btn .ti{display:inline-flex;align-items:center;justify-content:center;flex:0 0 17px;width:17px;height:17px;font-size:13px;line-height:1;text-align:center}
@@ -254,7 +261,7 @@ a.pglink{color:var(--amber);text-decoration:underline dotted;text-underline-offs
 </style>
 </head>
 <body>
-<div class="ios-top-strip" aria-hidden="true"></div>
+<div class="sb-blur" aria-hidden="true"></div>
 <script>
 /* iOS home-screen (standalone) flag — navigator.standalone exists only on iOS WebKit. */
 try{if(navigator.standalone===true)document.documentElement.classList.add('ios-standalone')}catch(e){}
@@ -778,7 +785,7 @@ function showTab(id){
   pn.classList.add('active');
   const f=document.querySelector('.src');if(f)pn.appendChild(f); /* footer sits at the end of the scrolling content */
   document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'"))b.classList.add('active')});
-  const w=document.querySelector('.wrap');if(w){w.scrollTop=0;w.style.setProperty('--fade','0px')}   /* tab bar + content scroll together; a new tab starts at the top */
+  const w=document.querySelector('.wrap');if(w){w.scrollTop=0;w.style.setProperty('--fade','0px');if(window.__hdr)window.__hdr(true)}   /* tab bar + content scroll together; a new tab starts at the top */
 }
 function toggleAcc(btn){
   const body=btn.nextElementSibling;
@@ -1127,8 +1134,18 @@ document.addEventListener('click',function(e){
 (function(){var a=document.querySelector('.tab-panel.active'),f=document.querySelector('.src');if(a&&f)a.appendChild(f)})();
 /* fade: content dissolves as it scrolls up under the header (fade zone grows from 0 to 28px over the first 28px of scroll) */
 (function(){var w=document.querySelector('.wrap');if(!w)return;var t=0;
-  function f(){t=0;w.style.setProperty('--fade',Math.min(w.scrollTop,28)+'px')}
-  w.addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(f)},{passive:true});f()})();
+  var hero=document.querySelector('.hero'),last=0,acc=0,skip=0,hid=false;
+  function hdr(show){if(hid===!show)return;hid=!show;hero.classList.toggle('hide',hid);w.classList.toggle('hh',hid);acc=0}
+  window.__hdr=hdr;
+  function f(){t=0;var y=w.scrollTop;w.style.setProperty('--fade',Math.min(y,28)+'px');
+    var max=w.scrollHeight-w.clientHeight,dy=y-last;last=y;
+    if(y<=0){hdr(true);return}                     /* top (or iOS bounce) -> show */
+    if(Date.now()<skip||(y>=max-1&&dy<0))return; /* accordion toggles / bottom bounce-back: leave as is */
+    if(dy*acc<0)acc=0;acc+=dy;                     /* accumulate in one direction to avoid jitter */
+    if(acc>12&&y>40)hdr(false);else if(acc<-12)hdr(true)}
+  w.addEventListener('scroll',function(){if(!t)t=requestAnimationFrame(f)},{passive:true});
+  w.addEventListener('click',function(){skip=Date.now()+400},true);
+  f()})();
 
 /* ───── Update checker: opens instantly from cache, then every ~5 s asks the server (tiny HEAD request) whether index.html changed.
    Unchanged -> nothing is downloaded. Changed -> download once, store in the cache, reload (when it won't disturb you). ───── */
@@ -1184,7 +1201,8 @@ document.addEventListener('click',function(e){
     window.addEventListener('online',check);
   });
 })();
-function fitHero(){var h=document.getElementById('hero-title');if(!h)return;var fs=17;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}}
+function setHH(){var hr=document.querySelector('.hero'),w=document.querySelector('.wrap');if(hr&&w)w.style.setProperty('--hh',hr.offsetHeight+'px')}
+function fitHero(){var h=document.getElementById('hero-title');if(!h){return}var fs=17;h.style.fontSize=fs+'px';while(h.scrollWidth>h.clientWidth&&fs>9){fs-=.5;h.style.fontSize=fs+'px'}setHH()}
 fitHero();window.addEventListener('resize',fitHero);window.addEventListener('load',fitHero);
 try{if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHero)}catch(e){}
 try{rdLinkify(document.querySelector('.wrap'))}catch(e){console.warn('linkify',e)}
